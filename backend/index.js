@@ -5,9 +5,24 @@ import Usermodel from './models/User.js';
 const app= express();
 app.use(cors());
 app.use(express.json());
+import dotenv from "dotenv";
+dotenv.config()
+const MONGO_URL = process.env.DB_URI;
 
-mongoose.connect('mongodb+srv://Blog:kritvikj07@cluster0.wy9yy7a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
+
+const connectToMongoose = async () => {
+    await mongoose
+      mongoose.connect(MONGO_URL)
+      .then(() => {
+        console.log("connected successfully");
+      })
+      .catch((e) => {
+        console.log("error : ", e);
+      });
+  };
+
+connectToMongoose();
 app.post('/register',async (req,res)=>{
     const{username,userpass} = req.body;
     try{
