@@ -2,11 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import Usermodel from './models/User.js';
+import dotenv from 'dotenv';
 const app= express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://Blog:kritvikj07@cluster0.wy9yy7a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+dotenv.config();
+
+const mongoURI = process.env.mongoURI;
+mongoose.connect()
 
 app.post('/register',async (req,res)=>{
     const{username,userpass} = req.body;
