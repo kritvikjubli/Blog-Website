@@ -1,19 +1,25 @@
 import express from 'express';
+import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from 'mongoose';
 import Usermodel from './models/User.js';
-const app= express();
-app.use(cors());
-app.use(express.json());
-import dotenv from "dotenv";
+import jwt from 'jsonwebtoken'
+import cookieParser from 'cookie-parser';
 dotenv.config()
 const MONGO_URL = process.env.DB_URI;
+const sec="jfdksjnjksnkdjcn7637b3hjn";
 
+const app= express();
+app.use(cors(
+    {credentials:true,
+        origin:'http://localhost:3000'}
+        ));
+app.use(cookieParser);
+app.use(express.json());
 
 
 const connectToMongoose = async () => {
-    await mongoose
-      mongoose.connect(MONGO_URL)
+    await mongoose.connect(MONGO_URL)
       .then(() => {
         console.log("connected successfully");
       })
@@ -35,9 +41,28 @@ app.post('/register',async (req,res)=>{
 
 app.post('/login',async (req,res)=>{
     const{username,userpass}=req.body;
-    const userinfo=await Usermodel.findOne({username,userpass});
-    // const 
-    res.json(userinfo);
+    try{
+        Usermodel.findOne({username});
+        const userinfo=await Usermodel.findOne({username});
+            const ispassok=(userpass == userinfo.userpass);
+            if(ispassok){
+                jwt.sign({username,id:userinfo._id}, sec,{},(err,token)=>{
+                    if(err) throw err;
+                    else{
+                    res.cookie('token',token).json('ok');
+                }
+            })
+        }
+        else{
+            res.status(400).json('wrong crenditials');
+        }
+    }catch(err){
+        alert("error : ", err);
+    }
+})
+
+app.get('/profile',(req,res)=>{
+    res.json(req.cookie);
 })
 
 
