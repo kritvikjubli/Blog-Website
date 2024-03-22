@@ -7,14 +7,14 @@ import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 dotenv.config()
 const MONGO_URL = process.env.DB_URI;
-const sec="jfdksjnjksnkdjcn7637b3hjn";
+const sec=process.env.SECRET;
 
 const app= express();
 app.use(cors(
     {credentials:true,
         origin:'http://localhost:3000'}
         ));
-app.use(cookieParser);
+app.use(cookieParser());
 app.use(express.json());
 
 
@@ -62,9 +62,21 @@ app.post('/login',async (req,res)=>{
 })
 
 app.get('/profile',(req,res)=>{
-    res.json(req.cookie);
+    const {token}=req.cookies;
+    jwt.verify(token,sec,{},(err,info)=>{
+        if(err){
+            throw err;
+        }
+        else{
+            res.json(info);
+        }
+    });
+    // res.json(req.cookies);
 })
 
+app.post('/logout',(req,res)=>{
+    res.cookie('token','').json('ok');
+});
 
 app.listen(4000,()=>{
     console.log("http://localhost:4000")

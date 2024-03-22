@@ -16,7 +16,6 @@ const Registerpage = () => {
       }else{
         alert('Success');
       }
-    
   }
   return (
    <form className='register' onSubmit={register}>
