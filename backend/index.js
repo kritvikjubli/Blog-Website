@@ -41,24 +41,21 @@ app.post('/register',async (req,res)=>{
 
 app.post('/login',async (req,res)=>{
     const{username,userpass}=req.body;
-    try{
         Usermodel.findOne({username});
         const userinfo=await Usermodel.findOne({username});
             const ispassok=(userpass == userinfo.userpass);
             if(ispassok){
                 jwt.sign({username,id:userinfo._id}, sec,{},(err,token)=>{
                     if(err) throw err;
-                    else{
-                    res.cookie('token',token).json('ok');
-                }
+                    res.cookie('token',token).json({
+                        id:userinfo._id,
+                        username,
+                    });
             })
         }
         else{
             res.status(400).json('wrong crenditials');
         }
-    }catch(err){
-        alert("error : ", err);
-    }
 })
 
 app.get('/profile',(req,res)=>{
@@ -67,9 +64,9 @@ app.get('/profile',(req,res)=>{
         if(err){
             throw err;
         }
-        else{
+        // else{
             res.json(info);
-        }
+        // }
     });
     // res.json(req.cookies);
 })

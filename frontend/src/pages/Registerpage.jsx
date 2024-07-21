@@ -11,7 +11,7 @@ const Registerpage = () => {
         body:JSON.stringify({username,userpass}),
         headers:{'Content-Type':'application/json'}
       })
-      if(res.status!=200) {
+      if(res.status!==200) {
         alert('Error');
       }else{
         alert('Success');
@@ -21,9 +21,9 @@ const Registerpage = () => {
    <form className='register' onSubmit={register}>
     <h1>Register</h1>
     <input type="text" placeholder='User Name' value={username}
-    onChange={ev=>{setusername(ev.target.value)}} />
+    onChange={ev=>{setusername(ev.target.value)}} required />
     <input type="password" placeholder='Password' value={userpass}
-    onChange={ev=>{setuserpass(ev.target.value)}}/>
+    onChange={ev=>{setuserpass(ev.target.value)}} required/>
     <button>Register</button>
    </form>
   )

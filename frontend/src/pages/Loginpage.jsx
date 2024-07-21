@@ -31,9 +31,9 @@ const Loginpage = () => {
         <form className='login' onSubmit={login}>
             <h1>Login</h1>
             <input type="text" placeholder='User name' value={username} 
-            onChange={ev=>{setusername(ev.target.value)}} />
+            onChange={ev=>{setusername(ev.target.value)}} reqired />
             <input type="password" placeholder='password' value={userpass}
-            onChange={ev=>{setuserpass(ev.target.value)}} />
+            onChange={ev=>{setuserpass(ev.target.value)}} required />
             <button>Login</button>
         </form>
   )
