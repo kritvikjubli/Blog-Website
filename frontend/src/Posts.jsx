@@ -1,17 +1,18 @@
 import React from 'react'
-const Posts = () => {
+import {formatISO9075} from "date-fns"
+const Posts = ({title,summ,cover,content,createdAt,author}) => {
   return (
     <div className="post">
             <div>
-              <img className="img" src="" alt="" />
+              <img className="img" src={'http://localhost:4000/'+cover} alt="" />
             </div>
             <div className="summary">
-              <h2>port folio</h2>
+              <h2>{title}</h2>
               <p className="info">
-                <a href="https://github.com/kritvikjubli/Blog-Website" className="author">jubli ji</a>
-                <time>2023-01-06 16:45</time>
+                <a href="https://github.com/kritvikjubli/Blog-Website" className="author">{author.username}</a>
+                <time>{formatISO9075(new Date(createdAt))}</time>
               </p>
-              <p className="discp">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, error?</p>
+              <p className="discp">{summ}</p>
             </div>
     </div>
   )

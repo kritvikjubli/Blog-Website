@@ -3,19 +3,31 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from 'mongoose';
 import Usermodel from './models/User.js';
-import jwt from 'jsonwebtoken'
+import Post from "./models/post.js"
+import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import multer from "multer";
+const upload = multer({ dest: 'uploads/' });
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from 'url';
+
+
 dotenv.config()
 const MONGO_URL = process.env.DB_URI;
 const sec=process.env.SECRET;
 
 const app= express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors(
     {credentials:true,
         origin:'http://localhost:3000'}
         ));
 app.use(cookieParser());
 app.use(express.json());
+
 
 
 const connectToMongoose = async () => {
@@ -64,16 +76,45 @@ app.get('/profile',(req,res)=>{
         if(err){
             throw err;
         }
-        // else{
             res.json(info);
-        // }
     });
-    // res.json(req.cookies);
 })
 
 app.post('/logout',(req,res)=>{
     res.cookie('token','').json('ok');
 });
+
+
+app.post('/post',upload.single('file'), async (req,res)=>{
+    const {originalname,path}=req.file;
+    const part=originalname.split('.');
+    const ext=part[part.length-1];
+    const newpath=path+'.'+ext;
+    fs.renameSync(path,newpath)
+    const {token}=req.cookies;
+    jwt.verify(token,sec,{},async(err,info)=>{
+        if(err){
+            throw err;
+        }
+        const {title,summ,content}=req.body;
+    const postdoc=await Post.create({
+        title,
+        summ,
+        content,
+        cover:newpath,
+        author:info.id,
+    })
+    res.json(postdoc)
+    });
+})
+
+app.get('/post',async (req,res)=>{
+    res.json(await Post.find()
+    .populate('author',['username'])
+    .sort({createdAt:-1})
+    .limit(20)
+);
+})
 
 app.listen(4000,()=>{
     console.log("http://localhost:4000")
