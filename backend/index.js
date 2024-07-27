@@ -16,7 +16,7 @@ import { fileURLToPath } from 'url';
 dotenv.config()
 const MONGO_URL = process.env.DB_URI;
 const sec=process.env.SECRET;
-
+const port=process.env.PORT || 4000;
 const app= express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -152,6 +152,6 @@ app.put('/post',upload.single('file'), async(req,res)=>{
     });
 })
 
-app.listen(4000,()=>{
-    console.log("http://localhost:4000")
+app.listen(port,()=>{
+    console.log(`http://localhost:${port}`)
 });

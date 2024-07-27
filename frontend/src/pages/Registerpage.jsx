@@ -5,8 +5,7 @@ const Registerpage = () => {
   const [userpass,setuserpass]=useState("");
   const register=async(ev)=>{
     ev.preventDefault();
-    
-     const res= await fetch('http://localhost:4000/register',{
+     const res= await fetch(`http://localhost:4000/register`,{
         method:'POST',
         body:JSON.stringify({username,userpass}),
         headers:{'Content-Type':'application/json'}
