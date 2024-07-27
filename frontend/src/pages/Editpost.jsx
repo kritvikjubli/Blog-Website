@@ -29,7 +29,7 @@ const Editpost = () => {
         if(file?.[0]){
             data.set('file',file?.[0]);
         }
-        const res=await fetch("http://localhost:4000/post",{
+        const res=await fetch("https://blog-website-51jr.onrender.com/post",{
             method:"PUT",
             body:data,
             credentials:'include',
