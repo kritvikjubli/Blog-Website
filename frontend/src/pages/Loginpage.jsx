@@ -8,7 +8,7 @@ const Loginpage = () => {
   const {setuserinfo}=useContext(userContext);
   const login=async(ev)=>{
     ev.preventDefault();
-  const res=  await fetch('http://localhost:4000/login',{
+  const res=  await fetch('https://blog-website-51jr.onrender.com/login',{
       method: 'POST',
       body: JSON.stringify({username,userpass}),
       headers: {'content-type': 'application/json'},
