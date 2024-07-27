@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors(
     {credentials:true,
-        origin:'http://localhost:3000'}
+        origin:'https://blog-website-frontend-uw9c.onrender.com'}
         ));
 app.use(cookieParser());
 app.use(express.json());
