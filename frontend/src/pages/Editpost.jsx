@@ -10,7 +10,7 @@ const Editpost = () => {
     const [rd,setrd]=useState(false);
 
     useEffect(()=>{
-        fetch('http://localhost:4000/post/'+id).then(res=>{
+        fetch('https://blog-website-51jr.onrender.com/post/'+id).then(res=>{
             res.json().then(postinfo=>{
                 settitle(postinfo.title);
                 setsumm(postinfo.summ);
