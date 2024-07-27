@@ -10,7 +10,7 @@ const PostPage = () => {
     const [postinfo,setpostinfo]=useState(null);
     const {userinfo}=useContext(userContext);
     useEffect(()=>{
-        fetch(`http://localhost:4000/post/${id}`)
+        fetch(`https://blog-website-51jr.onrender.com/post/${id}`)
         .then(res=>{
             res.json().then(postinfo=>{
                 setpostinfo(postinfo);
