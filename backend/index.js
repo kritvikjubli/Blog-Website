@@ -116,6 +116,42 @@ app.get('/post',async (req,res)=>{
 );
 })
 
+app.get('/post/:id',async(req,res)=>{
+    const {id}=req.params;
+    const postdoc=await Post.findById(id).populate('author',['username']);
+    res.json(postdoc);
+})
+
+app.put('/post',upload.single('file'), async(req,res)=>{
+    let newpath=null;
+    if(req.file){
+    const {originalname,path}=req.file;
+    const part=originalname.split('.');
+    const ext=part[part.length-1];
+    newpath=path+'.'+ext;
+    fs.renameSync(path,newpath)
+    }
+    const {token}=req.cookies;
+    jwt.verify(token,sec,{},async(err,info)=>{
+        if(err){
+            throw err;
+        }
+        const {id,title,summ,content}=req.body;
+        const postdoc = await Post.findById(id)
+        const isauthor = JSON.stringify(postdoc.author)===JSON.stringify(info.id);
+        if(!isauthor){
+            return res.status(400).json('you are not author')
+        }
+        await postdoc.updateOne({
+            title,
+            summ,
+            content,
+            cover: newpath ? newpath: postdoc.cover,
+        })
+    res.json(postdoc)
+    });
+})
+
 app.listen(4000,()=>{
     console.log("http://localhost:4000")
 });

@@ -1,23 +1,7 @@
 import React ,{useState} from 'react'
 import {Navigate} from 'react-router-dom'
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
-const modules = {
-  toolbar: [
-    [{ 'header': [1, 2, false] }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-    ['link', 'image'],
-    ['clean']
-  ]
-};
+import Editor from '../Editor'
 
-const formats=[
-  'header',
-  'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'indent',
-  'link', 'image'
-]
 const Createpost = () => {
   const [title,settitle]=useState('');
   const [summ,setsumm]=useState('');
@@ -50,7 +34,7 @@ const Createpost = () => {
       <input type="title" placeholder={'Title'} value={title} onChange={ev=> settitle(ev.target.value)} required/>
       <input type="summary" placeholder={'Summary'} value={summ} onChange={ev=>setsumm(ev.target.value)} required />
       <input type="file" required onChange={ev=>setfile(ev.target.files)}  />
-      <ReactQuill value={content} onChange={newvalue=>setcontent(newvalue)} modules={modules} formats={formats}/>
+      <Editor value={content} onchange={setcontent}/>
       <button style={{marginTop:'5px'}}> Create Post</button>
     </form>
     </>
