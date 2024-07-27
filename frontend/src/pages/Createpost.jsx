@@ -16,7 +16,7 @@ const Createpost = () => {
       data.set('summ',summ);
       data.set('content',content);
       data.set('file',file[0]);
-      const r=await fetch('http://localhost:4000/post',{
+      const r=await fetch('https://blog-website-51jr.onrender.com/post',{
         method:'POST',
         body: data,
         credentials:'include',
